@@ -15,13 +15,34 @@ function Dashboard() {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = (id) => {
-      // TODO
-      console.log(id)
+    const [employee] = employees.filter(employees => employee.id === id);
+    setSelectedEmployee(employee);
+    setIsEditing(true);
   };
 
   const handleDelete = (id) => {
-       // TODO
-       console.log(id)
+      Swal.fire({
+          icon:'warning',
+          title:'Are you sure?',
+          text:"You won't be able to revert this",
+          showCancelButton:true,
+          confirmButtonText:'Yes, Delete it!',
+          cancelButtonText:'No, cancel!'
+      }).then(result =>{
+          if (result.value) {
+              const [employee] = employees.filter(employee => employee.id === id);
+
+              Swal.fire({
+                icon:'success',
+                title:'Deleted',
+                text:`${employee.firstName} ${employee.lastName}'s has been deleted.`,
+                showConfirmButton:false,
+                timer:1500
+              });
+
+              setEmployees(employees.filter(employee => employee.id !== id));
+          }
+      })
   };
 
   return (
